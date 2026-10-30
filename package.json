@@ -1,0 +1,26 @@
+{
+  "name": "desafio-trainee-spacecom",
+  "version": "1.0.0",
+  "description": "Detecção de encontros entre monitorados e vítimas",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabas/desafio-trainee-spacecom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Gabas/desafio-trainee-spacecom/issues"
+  },
+  "homepage": "https://github.com/Gabas/desafio-trainee-spacecom#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}
