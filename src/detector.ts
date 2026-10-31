@@ -1,7 +1,9 @@
-import { haversine } from "./haversine.js";
+import { haversine, RAIO_TERRA_METROS } from "./haversine.js";
 import type { Encontro, Registro, TipoEncontro } from "./tipos.js";
 
 const RAIO_METROS = 20;
+const METROS_POR_GRAU = (RAIO_TERRA_METROS * Math.PI) / 180;
+const LIMITE_GRAUS_LAT = (RAIO_METROS / METROS_POR_GRAU) * 1.001;
 
 export interface ParProximo {
     a: Registro;
@@ -16,6 +18,7 @@ export function acharParesProximos(grupo: Registro[]): ParProximo[] {
         for (let j = i + 1; j < grupo.length; j++) {
             const a = grupo[i];
             const b = grupo[j];
+            if (Math.abs(a.lat - b.lat) > LIMITE_GRAUS_LAT) continue;
             const distanciaMetros = haversine(a.lat, a.lon, b.lat, b.lon);
 
             if (distanciaMetros < RAIO_METROS) {
