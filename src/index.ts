@@ -1,6 +1,7 @@
 // import { haversine } from "./haversine.js";
 // import { parsearLinha } from "./leitor.js";
 import { lerDataset } from "./leitor.js";
+import { agruparPorTimestamp } from "./agrupador.js";
 
 // const distancia = haversine(-10.07996, -37.08384, -10.07987, -37.08389);
 // console.log(distancia);
@@ -12,6 +13,12 @@ import { lerDataset } from "./leitor.js";
 
 
 
-const registros = lerDataset("data/dataset1.txt");
-console.log(registros.length);
-console.log(registros[0]);
+// const registros = lerDataset("data/dataset1.txt");
+// console.log(registros.length);
+// console.log(registros[0]);
+
+
+const grupos = agruparPorTimestamp(lerDataset("data/dataset1.txt"));
+
+console.log(grupos.size);
+console.log(grupos.get("2024-01-01 00:00:00")?.length);
