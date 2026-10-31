@@ -1,24 +1,22 @@
-// import { haversine } from "./haversine.js";
-// import { parsearLinha } from "./leitor.js";
 import { lerDataset } from "./leitor.js";
 import { agruparPorTimestamp } from "./agrupador.js";
-
-// const distancia = haversine(-10.07996, -37.08384, -10.07987, -37.08389);
-// console.log(distancia);
-
-
-
-// console.log(parsearLinha('9;;"2024-01-01 00:00:00";1.64046;-69.53947;true;"10"'));
-// console.log(parsearLinha('1;;"2024-01-01 00:00:00";-25.59386;-73.96319;false;'));
-
-
-
-// const registros = lerDataset("data/dataset1.txt");
-// console.log(registros.length);
-// console.log(registros[0]);
-
+import { acharParesProximos, criarEncontros } from "./detector.js";
+import type { Encontro } from "./tipos.js";
 
 const grupos = agruparPorTimestamp(lerDataset("data/dataset1.txt"));
 
-console.log(grupos.size);
-console.log(grupos.get("2024-01-01 00:00:00")?.length);
+const encontros: Encontro[] = [];
+
+for  (const grupo of grupos.values()) {
+    encontros.push(...criarEncontros(acharParesProximos(grupo)));
+}
+
+const porTipo = { generico: 0, faccao: 0, protetiva: 0 };
+
+for (const encontro of encontros) {
+    porTipo[encontro.tipo]++;
+}
+
+console.log(encontros.length);
+console.log(porTipo);
+console.log(encontros[0]);
