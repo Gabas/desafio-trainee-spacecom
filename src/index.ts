@@ -1,22 +1,10 @@
-import { lerDataset } from "./leitor.js";
-import { agruparPorTimestamp } from "./agrupador.js";
-import { acharParesProximos, criarEncontros } from "./detector.js";
-import type { Encontro } from "./tipos.js";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { detectarEncontros } from "./processar.js";
 
-const grupos = agruparPorTimestamp(lerDataset("data/dataset1.txt"));
+const numero = process.argv[2] ?? "1";
+const encontros = detectarEncontros(`data/dataset${numero}.txt`);
 
-const encontros: Encontro[] = [];
+mkdirSync("output", { recursive: true });
+writeFileSync(`output/resultado${numero}.json`, JSON.stringify(encontros, null, 2));
 
-for  (const grupo of grupos.values()) {
-    encontros.push(...criarEncontros(acharParesProximos(grupo)));
-}
-
-const porTipo = { generico: 0, faccao: 0, protetiva: 0 };
-
-for (const encontro of encontros) {
-    porTipo[encontro.tipo]++;
-}
-
-console.log(encontros.length);
-console.log(porTipo);
-console.log(encontros[0]);
+console.log(`dataset${numero}: ${encontros.length} encontros`);
