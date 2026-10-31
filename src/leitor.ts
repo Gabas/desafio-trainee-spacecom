@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { closeSync, openSync, readFileSync, readSync } from "node:fs";
 import type { Registro } from "./tipos.js";
 
 function semAspas(str: string): string {
@@ -32,4 +32,28 @@ export function lerDataset(caminho: string): Registro[] {
     }
 
     return registros;
+}
+
+const TAMANHO_BUFFER = 8 * 1024 * 1024; // 8MB
+
+export function* lerLinhas(caminho: string): Generator<string> {
+    const arquivo = openSync(caminho, "r");
+    const buffer = Buffer.alloc(TAMANHO_BUFFER);
+    let resto = "";
+
+    try {
+        let lidos = readSync(arquivo, buffer, 0, buffer.length, null);
+        while (lidos > 0) {
+            const linhas = (resto + buffer.toString("latin1", 0, lidos)).split("\n");
+            resto = linhas.pop() ?? "";
+
+            yield* linhas;
+            lidos = readSync(arquivo, buffer, 0, buffer.length, null);
+        }
+        if (resto !== "") {
+            yield resto;
+        }
+    } finally {
+        closeSync(arquivo);
+    }
 }
