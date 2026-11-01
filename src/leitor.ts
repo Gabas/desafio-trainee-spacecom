@@ -1,4 +1,4 @@
-import { closeSync, openSync, readFileSync, readSync } from "node:fs";
+import { closeSync, openSync, readSync } from "node:fs";
 import type { Registro } from "./tipos.js";
 
 function semAspas(str: string): string {
@@ -19,19 +19,6 @@ export function parsearLinha(linha: string): Registro {
         medidaProtetiva: semAspas(medida) === "true",
         restricoes: listaRestricoes === "" ? [] : listaRestricoes.split(",").map(Number),
     };
-}
-
-export function lerDataset(caminho: string): Registro[] {
-    const conteudo = readFileSync(caminho, "utf-8");
-    const linhas = conteudo.split("\n").slice(1);
-
-    const registros: Registro[] = [];
-    for (const linha of linhas) {
-        if (linha.trim() === "") continue;
-        registros.push(parsearLinha(linha));
-    }
-
-    return registros;
 }
 
 const TAMANHO_BUFFER = 8 * 1024 * 1024; // 8MB
