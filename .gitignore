@@ -1,4 +1,4 @@
 node_modules/
 dist/
 .DS_Store
-data/*.txt
+data/dataset[3-7].txt
